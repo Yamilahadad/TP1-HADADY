@@ -1,10 +1,9 @@
 package resolHadadY;
 
-import java.util.ArrayList;
-
 public class Ejercicio14 {
+
     public static void ejecutar() {
-        int[][] arreglo = {
+        int[][] original = {
                 {1, 2, 0, 3, 0, 7},
                 {0, 0, 0, 0},
                 {0, 6, 9, 8, 0, 9, 6},
@@ -14,36 +13,47 @@ public class Ejercicio14 {
         };
 
         System.out.println("Arreglo original:");
-        mostrar(arreglo);
+        mostrar(original);
 
-        ArrayList<int[]> nuevoArreglo = new ArrayList<>();
-
-        for (int[] fila : arreglo) {
-            int contadorCeros = 0;
-            for (int num : fila) {
-                if (num == 0) {
-                    contadorCeros++;
+        int filasValidas = 0;
+        for (int i = 0; i < original.length; i++) {
+            boolean filaSoloCeros = true;
+            for (int j = 0; j < original[i].length; j++) {
+                if (original[i][j] != 0) {
+                    filaSoloCeros = false;
+                    break;
                 }
             }
-            if (contadorCeros != fila.length) {
-                ArrayList<Integer> nuevaFila = new ArrayList<>();
-                for (int num : fila) {
-                    if (num != 0) {
-                        nuevaFila.add(num);
+            if (!filaSoloCeros) {
+                filasValidas++;
+            }
+        }
+
+        int[][] resultado = new int[filasValidas][];
+        int filaResultado = 0;
+
+        for (int i = 0; i < original.length; i++) {
+            int cantidadNoCeros = 0;
+            for (int j = 0; j < original[i].length; j++) {
+                if (original[i][j] != 0) {
+                    cantidadNoCeros++;
+                }
+            }
+
+            if (cantidadNoCeros > 0) {
+                resultado[filaResultado] = new int[cantidadNoCeros];
+                int idx = 0;
+                for (int j = 0; j < original[i].length; j++) {
+                    if (original[i][j] != 0) {
+                        resultado[filaResultado][idx++] = original[i][j];
                     }
                 }
-                int[] nuevaFilaArray = nuevaFila.stream().mapToInt(i -> i).toArray();
-                nuevoArreglo.add(nuevaFilaArray);
+                filaResultado++;
             }
         }
 
-        System.out.println("\nArreglo sin ceros:");
-        for (int[] fila : nuevoArreglo) {
-            for (int num : fila) {
-                System.out.print(num + " ");
-            }
-            System.out.println();
-        }
+        System.out.println("Arreglo sin ceros y sin filas solo con ceros:");
+        mostrar(resultado);
     }
 
     public static void mostrar(int[][] arreglo) {
